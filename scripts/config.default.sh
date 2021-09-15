@@ -60,7 +60,7 @@ fi
 
 # Kafka queue
 # Get latest release URL at https://kafka.apache.org/quickstart
-: ${KAFKA_INSTALL_URL:="http://mirror.dkm.cz/apache/kafka/2.4.0/kafka_2.12-2.4.0.tgz"}
+: ${KAFKA_INSTALL_URL:="https://mirror.dkm.cz/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz"}
 # Directory below is created automatically by script install.sh
 : ${KAFKA_DIR:="$root_dir/kafka"}
 : ${QUEUE_HOST:="localhost"} # used by openshift-operations

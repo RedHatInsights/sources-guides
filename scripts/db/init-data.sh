@@ -3,16 +3,25 @@
 source config.sh
 source init-common.sh
 
-#cd ${TOPOLOGICAL_API_DIR}
-#echo "Db:Seed..."
-#bundle exec rake db:seed
+if [ -d ${TOPOLOGICAL_API_DIR} ]; then
+    cd ${TOPOLOGICAL_API_DIR}
+    echo "Db:Seed..."
+    bundle exec rake db:seed
+else
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+fi
+
 cd ${SOURCES_API_DIR}
 bundle exec rake db:seed
 
-#cd ${TOPOLOGICAL_API_DIR}
-#echo "Creating Tenants"
-#rails r "Tenant.find_or_create_by(:external_tenant => '$ACCOUNT_NUMBER')"
-#rails r "Tenant.find_or_create_by(:external_tenant => 'system_orchestrator')"
+if [ -d ${TOPOLOGICAL_API_DIR} ]; then
+    cd ${TOPOLOGICAL_API_DIR}
+    echo "Creating Tenants"
+    rails r "Tenant.find_or_create_by(:external_tenant => '$ACCOUNT_NUMBER')"
+    rails r "Tenant.find_or_create_by(:external_tenant => 'system_orchestrator')"
+else
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+fi
 
 cd ${SOURCES_API_DIR}
 rails r "Tenant.find_or_create_by(:name => '$ACCOUNT_NUMBER', :external_tenant => '$ACCOUNT_NUMBER')"
@@ -28,14 +37,12 @@ rails r "Source.find_or_create_by(:name => 'Mock Source', :tenant => Tenant.wher
 
 # Token(Password) has to be added manually!
 echo "Setting Openshift Source to: $OPENSHIFT_SOURCE_UID"
-echo "$ACCOUNT_NUMBER | $OPENSHIFT_SOURCE_UID | $OPENSHIFT_PORT | $OPENSHIFT_SCHEME | $OPENSHIFT_HOST"
 rails r "tenant = Tenant.where(:external_tenant => '$ACCOUNT_NUMBER').first
 src = Source.find_or_create_by(:name => 'OpenShift Source', :tenant => tenant, :uid =>'$OPENSHIFT_SOURCE_UID', :source_type => SourceType.find_by(:name => 'openshift'), :availability_status => 'available')
 endpoint = Endpoint.find_or_create_by(:source_id => src.id, :port => $OPENSHIFT_PORT, :default => true, :scheme => '$OPENSHIFT_SCHEME', :host => '$OPENSHIFT_HOST', :path => '/', :tenant => tenant)
 auth = Authentication.find_or_create_by(:resource_type => 'Endpoint', :resource_id => endpoint.id, :authtype => 'token', :password =>'xxx', :tenant => tenant)
 app_type = ApplicationType.where(:name => '/insights/platform/cost-management').first
 app = Application.find_or_create_by(:source => src, :tenant => tenant, :application_type => app_type, :availability_status => 'available')"
-
 
 echo "Setting Amazon Source to: $AMAZON_SOURCE_UID"
 rails r "tenant = Tenant.where(:external_tenant => '$ACCOUNT_NUMBER').first
@@ -46,7 +53,6 @@ app_type = ApplicationType.where(:name => '/insights/platform/cost-management').
 app = Application.find_or_create_by(:source => src, :tenant => tenant, :application_type => app_type, :availability_status => 'available')"
 
 echo "Setting AnsibleTower Source to: $ANSIBLE_TOWER_SOURCE_UID"
-echo "$ACCOUNT_NUMBER | $ANSIBLE_TOWER_SOURCE_UID | $ANSIBLE_TOWER_SCHEME | $ANSIBLE_TOWER_HOST | $ANSIBLE_TOWER_USER | $ANSIBLE_TOWER_PASSWORD"
 rails r "tenant = Tenant.where(:external_tenant => '$ACCOUNT_NUMBER').first
 src = Source.find_or_create_by(:name => 'Ansible Tower Source', :tenant => tenant, :uid => '$ANSIBLE_TOWER_SOURCE_UID', :source_type => SourceType.find_by(:name => 'ansible-tower'), :availability_status => 'available')
 endpoint = Endpoint.find_or_create_by(:source_id => src.id, :role => 'ansible', :default => true, :scheme => '$ANSIBLE_TOWER_SCHEME', :host => '$ANSIBLE_TOWER_HOST', :path => '/', :tenant => tenant)
@@ -63,7 +69,6 @@ app_type = ApplicationType.where(:name => '/insights/platform/cost-management').
 app = Application.find_or_create_by(:source => src, :tenant => tenant, :application_type => app_type, :availability_status => 'available')"
 
 echo "Setting Google Source to: $GOOGLE_SOURCE_UID"
-echo "$ACCOUNT_NUMBER | $GOOGLE_PROJECT_ID | $GOOGLE_AUTH_JSON"
 rails r "tenant = Tenant.where(:external_tenant => '$ACCOUNT_NUMBER').first
 src = Source.find_or_create_by(:name => 'Google Source', :tenant => tenant, :uid =>'$GOOGLE_SOURCE_UID', :source_type => SourceType.find_by(:name => 'google'), :availability_status => 'available')
 endpoint = Endpoint.find_or_create_by(:source_id => src.id, :default => true, :path => '/', :tenant => tenant)

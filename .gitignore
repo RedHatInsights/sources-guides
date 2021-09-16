@@ -1,0 +1,4 @@
+scripts/config.sh
+scripts/api/dev*.sh
+scripts/local/**/*
+scripts/clowder/**/*.local.yaml

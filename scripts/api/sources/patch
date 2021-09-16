@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source "api/common.sh"
+sources_api_patch $1 "$2"

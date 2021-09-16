@@ -1,0 +1,66 @@
+---
+configuration:
+  local_root: /home/mslemr/Projects/RedHatInsights
+  quay_root: quay.io/mslemr
+repos_to_deploy: # Comment repos you don't want deploy
+- name: topological_inventory-amazon
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-ansible_tower
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-azure
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-google
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-openshift
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-api
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-ingress_api
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-orchestrator
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-persister
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-scheduler
+  source: local # [local|insights-production|insights-stage]
+- name: topological_inventory-sync
+  source: local # [local|insights-production|insights-stage]
+common_parameters:
+  MIN_REPLICAS: 1
+apps: # Applied for `repos_to_deploy/source: local`
+- name: topo-amazon
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-ansible-tower
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-azure
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-google
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-openshift
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-satellite
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-api
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-ingress-api
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-orchestrator
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-persister
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-scheduler
+  parameters:
+    IMAGE_TAG: xxxxxxx
+- name: topo-sync
+  parameters:
+    IMAGE_TAG: xxxxxxx

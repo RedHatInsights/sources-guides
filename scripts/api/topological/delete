@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source "api/common.sh"
+topological_api_delete $1

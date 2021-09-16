@@ -1,0 +1,29 @@
+---
+configuration:
+  local_root: /home/mslemr/Projects/RedHatInsights
+  quay_root: quay.io/mslemr
+repos_to_deploy: # Comment repos you don't want deploy
+- name: sources-api
+  source: local # [local|insights-production|insights-stage]
+- name: sources-monitor
+  source: local # [local|insights-production|insights-stage]
+#- name: sources-satellite
+#  source: local # [local|insights-production|insights-stage]
+- name: sources-superkey-worker
+  source: local # [local|insights-production|insights-stage]
+common_parameters:
+  MIN_REPLICAS: 1
+apps: # Applied for `repos_to_deploy/source: local`
+- name: sources-api
+  parameters:
+    IMAGE_TAG: xxxxxxx # your quay image tag
+    SOURCES_ENV: stage
+- name: sources-monitor
+  parameters:
+    IMAGE_TAG: xxxxxxx # your quay image tag
+- name: sources-satellite
+  parameters:
+    IMAGE_TAG: xxxxxxx # your quay image tag
+- name: sources-superkey-worker
+  parameters:
+    IMAGE_TAG: xxxxxxx # your quay image tag

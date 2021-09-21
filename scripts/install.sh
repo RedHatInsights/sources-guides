@@ -2,8 +2,8 @@
 
 cwd=$(pwd)
 
-if [[ $cwd != *"topological_inventory-guides/scripts" ]]; then
-  echo "Please switch to 'topological_inventory-guides/scripts' directory"
+if [[ $cwd != *"sources-guides/scripts" ]]; then
+  echo "Please switch to 'sources-guides/scripts' directory"
   exit
 fi
 
@@ -12,9 +12,6 @@ source init-common.sh
 
 set -e
 
-if [[ $cwd == *"topological_inventory-guides/scripts" ]]; then
-  echo "Please switch to 'topological_inventory-guides/scripts' directory"
-fi
 #
 # 1) create root directory
 #
@@ -26,6 +23,12 @@ cd ${root_dir}
 #
 # 2) download kafka
 #
+
+# if kafka directory exists including version from KAFKA_INSTALL_URL, then rename kafka diretory
+if [ -d ${KAFKA_DIR_WITH_VERSION} ]; then
+    mv ${KAFKA_DIR_WITH_VERSION} ${KAFKA_DIR}
+fi
+
 if [[ ! -d './kafka' ]]; then
     echo "-------------------------------------------------------"
     echo "Downloading Kafka..."
@@ -35,6 +38,7 @@ if [[ ! -d './kafka' ]]; then
 fi
 
 cd ${cwd}
+
 #
 # 3) make all scripts executable, create /scripts symlink
 #
@@ -86,7 +90,7 @@ if [ -d ${TOPOLOGICAL_API_DIR} ]; then
         fi
     done
 else
-    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
 fi
 
 echo "-------------------------------------------------------"
@@ -132,14 +136,14 @@ if [ -d ${INSIGHTS_PROXY_DIR} ]; then
     sudo bash scripts/patch-etc-hosts.sh
     bash scripts/update.sh
 else
-    echo "Info: Directory ${INSIGHTS_PROXY_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${INSIGHTS_PROXY_DIR} does not exist, skipping."
 fi
 
 if [ -d ${SOURCES_UI_DIR} ]; then
     cd ${SOURCES_UI_DIR}
     npm install
 else
-    echo "Info: Directory ${SOURCES_UI_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${SOURCES_UI_DIR} does not exist, skipping."
 fi
 
 echo "-------------------------------------------------------"

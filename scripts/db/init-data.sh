@@ -8,7 +8,7 @@ if [ -d ${TOPOLOGICAL_API_DIR} ]; then
     echo "Db:Seed..."
     bundle exec rake db:seed
 else
-    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
 fi
 
 cd ${SOURCES_API_DIR}
@@ -20,7 +20,7 @@ if [ -d ${TOPOLOGICAL_API_DIR} ]; then
     rails r "Tenant.find_or_create_by(:external_tenant => '$ACCOUNT_NUMBER')"
     rails r "Tenant.find_or_create_by(:external_tenant => 'system_orchestrator')"
 else
-    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
 fi
 
 cd ${SOURCES_API_DIR}

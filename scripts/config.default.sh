@@ -60,12 +60,14 @@ fi
 
 # Kafka queue
 # Get latest release URL at https://kafka.apache.org/quickstart
-: ${KAFKA_INSTALL_URL:="https://mirror.dkm.cz/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz"}
+: ${KAFKA_INSTALL_URL:="https://archive.apache.org/dist/kafka/2.8.0/kafka_2.13-2.8.0.tgz"}
+: ${KAFKA_VERSION:=$(basename ${KAFKA_INSTALL_URL} .tgz)}
+: ${KAFKA_DIR_WITH_VERSION:="$root_dir/$KAFKA_VERSION"}
 # Directory below is created automatically by script install.sh
 : ${KAFKA_DIR:="$root_dir/kafka"}
 : ${QUEUE_HOST:="localhost"} # used by openshift-operations
 : ${QUEUE_PORT:="9092"}
-export KAFKA_INSTALL_URL KAFKA_DIR QUEUE_HOST QUEUE_PORT
+export KAFKA_INSTALL_URL KAFKA_DIR_WITH_VERSION KAFKA_DIR QUEUE_HOST QUEUE_PORT
 
 # Disable prometheus
 export METRICS_PORT=0
@@ -87,6 +89,9 @@ export PERSISTER_DIR="$root_dir/topological_inventory-persister"
 
 # Topological Inventory Sources Sync
 export TOPOLOGICAL_INVENTORY_SYNC_DIR="$root_dir/topological_inventory-sync"
+
+# Topological Inventory Core
+export TOPOLOGICAL_INVENTORY_CORE="$root_dir/topological_inventory-core"
 
 # Ingress API service (Persister <-> Collectors)
 export INGRESS_API_DIR="$root_dir/topological_inventory-ingress_api"

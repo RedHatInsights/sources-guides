@@ -12,7 +12,7 @@ if [ -d ${TOPOLOGICAL_API_DIR} ]; then
     cd ..
     echo "[DONE] Migrating Topological Inventory"
 else
-    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exists. Skipping this step."
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
 fi
 
 echo "Migrating Sources"

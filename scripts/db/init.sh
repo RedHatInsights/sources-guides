@@ -2,16 +2,19 @@
 
 source config.sh
 source init-common.sh
-echo "a"
-#cwd=$(pwd)
 
-# cd ${TOPOLOGICAL_API_DIR}
+cwd=$(pwd)
 
-# bundle exec rake db:create
+if [ -d ${TOPOLOGICAL_API_DIR} ]; then
+    cd ${TOPOLOGICAL_API_DIR}
+    bundle exec rake db:create
+else
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
+fi
 
-#cd ${SOURCES_API_DIR}
-#bundle exec rake db:create
+cd ${SOURCES_API_DIR}
+bundle exec rake db:create
 
-#cd ${cwd}
-#db/migrate.sh
-#db/init-data.sh
+cd ${cwd}
+db/migrate.sh
+db/init-data.sh

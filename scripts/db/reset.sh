@@ -5,17 +5,27 @@
 source config.sh
 source init-common.sh
 
-cd ${root_dir}
+if [ -d ${TOPOLOGICAL_INVENTORY_CORE} ]; then
+    cd ${TOPOLOGICAL_INVENTORY_CORE}
+    bundle exec rake db:setup
+else
+    echo "Info: Directory ${TOPOLOGICAL_INVENTORY_CORE} does not exist, skipping."
+fi
 
-cd topological_inventory-core
-bundle exec rake db:setup
+if [ -d ${SOURCES_API_DIR} ]; then
+    cd ${SOURCES_API_DIR}
+    bundle exec rake db:setup
+    bundle exec rake db:migrate
+else
+    echo "Info: Directory ${SOURCES_API_DIR} does not exist, skipping."
+fi
 
-cd ${SOURCES_API_DIR}
-bundle exec rake db:setup
-bundle exec rake db:migrate
+if [ -d ${TOPOLOGICAL_API_DIR} ]; then
+    cd ${TOPOLOGICAL_API_DIR}
+    bundle exec rake db:migrate
+else
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
+fi
 
-cd ${TOPOLOGICAL_API_DIR}
-bundle exec rake db:migrate
-
-cd ${root_dir}/scripts
+cd ${root_dir}/sources-guides/scripts
 db/init-data.sh

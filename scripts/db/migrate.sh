@@ -5,11 +5,15 @@ source init-common.sh
 
 cd ${root_dir}
 
-#echo "Migrating Topological Inventory..."
-#cd topological_inventory-persister
-#bundle exec rake db:migrate
-#cd ..
-#echo "[DONE] Migrating Topological Inventory"
+if [ -d ${TOPOLOGICAL_API_DIR} ]; then
+    echo "Migrating Topological Inventory..."
+    cd topological_inventory-persister
+    bundle exec rake db:migrate
+    cd ..
+    echo "[DONE] Migrating Topological Inventory"
+else
+    echo "Info: Directory ${TOPOLOGICAL_API_DIR} does not exist, skipping."
+fi
 
 echo "Migrating Sources"
 cd ${SOURCES_API_DIR}

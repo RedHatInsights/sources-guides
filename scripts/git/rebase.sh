@@ -5,6 +5,7 @@
 #
 # NOTE: Edit your variables below!
 source config.sh
+source git/git_common.sh
 
 cd $root_dir
 
@@ -20,26 +21,27 @@ do
 	
 	echo "$name -------------------------------------------------------"
 	cd $name
+	main_master=$(master_or_main_branch)
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 
 	if git diff-index --quiet HEAD --; then
 		echo "* Updating (rebase) branch ${current_branch}"
 		git fetch --all --prune
-		git checkout master
+		git checkout $main_master
 	
 		has_upstream=`git branch -a | grep upstream | wc  -l`
 
 		if [[ "$has_upstream" -gt "0" ]]; then
-			git pull upstream master
-			git push origin master
+			git pull upstream $main_master
+			git push origin $main_master
 		else
-			git pull origin master
+			git pull origin $main_master
 		fi
 
-		if [[ ${current_branch} -ne "master" ]]; then
+		if [[ ${current_branch} -ne $main_master ]]; then
 			git checkout ${current_branch}
-			git rebase master
+			git rebase $main_master
 		fi
 	else
 		echo "Cannot update branch ${current_branch}: Modified files present"

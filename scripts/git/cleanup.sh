@@ -5,6 +5,7 @@
 # Usage: cleanup.sh [--force]
 
 source config.sh
+source git/git_common.sh
 
 case $1 in
     -h|--help) echo "Usage: cleanup.sh [--remote-cleanup]";;
@@ -23,16 +24,17 @@ do
     
 	echo "${name} -------------------------------------------------------"
 	cd ${name}
+	main_master=$(master_or_main_branch)
 
     # This has to be run from master
-    git checkout master
+    git checkout $main_master
 
     # Update our list of remotes
     git fetch
     git remote prune origin
 
     # Remove local fully merged branches
-    local_merged=$(git branch --merged master | grep -v 'master$')
+    local_merged=$(git branch --merged $main_master | grep -v $main_master)
     if [[ -z ${local_merged} ]]; then
         echo "No local branches to delete"
     else
@@ -44,7 +46,7 @@ do
 
     if [[ ${remote_cleanup} -eq 1 && "$has_upstream" -gt "0" ]]
     then
-        remote_merged=$(git branch -r --merged master | sed 's/ *origin\///' | grep -v 'master$')
+        remote_merged=$(git branch -r --merged $main_master | sed 's/ *origin\///' | grep -v $main_master)
         if [[ -z ${remote_merged} ]]; then
            echo "No remote branches to delete"
         else
